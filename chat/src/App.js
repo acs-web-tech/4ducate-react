@@ -48,6 +48,7 @@ function App() {
         <header class='head'></header>
         <div class='bdy'>
           {/* <div class='msg_tip' ></div> */}
+          <Message sender={arr} res={resarr}></Message>
         </div>
         <footer class='footer'>
           <i id='smil_emj' class="fa-solid fa-face-grin"></i>
@@ -56,7 +57,7 @@ function App() {
         </footer>
       </div>
 
-      <Message sender={arr} res={resarr}></Message>
+     
     </>
   );
 
