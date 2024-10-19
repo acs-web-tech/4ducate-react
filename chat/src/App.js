@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import React,{useState} from 'react';
 import { Second } from "./Second"
+
 let arr = [
   {
     name: "Arun P",
@@ -27,20 +28,17 @@ let resarr = [
   }
 ]
 function App() {
-  const inputarea = document.querySelector('.typing')
+  let [value,setValue] = useState(resarr)
+ 
   const bdyarea = document.querySelector('.bdy')
   // const msg_tip = document.querySelector('.msg_tip')
-  const store_value = () => {
-    if (inputarea && bdyarea) {
-
-      const newMsgTip = document.createElement('div');
-      newMsgTip.innerHTML += inputarea.value
-      newMsgTip.className = 'tooptip'
-      console.log(bdyarea.appendChild(newMsgTip))
-
-      inputarea.value = '';
-
-    }
+  const store_value = (event) => {
+    const inputarea = document.querySelector('.typing')
+    setValue([...value,{
+      message: inputarea.value,
+      time: "11:56am"
+    }])
+    
   }
   return (
     <>
@@ -48,11 +46,11 @@ function App() {
         <header class='head'></header>
         <div class='bdy'>
           {/* <div class='msg_tip' ></div> */}
-          <Message sender={arr} res={resarr}></Message>
+          <Message sender={arr} res={value}></Message>
         </div>
         <footer class='footer'>
           <i id='smil_emj' class="fa-solid fa-face-grin"></i>
-          <input class='typing' type='text' placeholder='Start typing...'></input>
+          <input class='typing' type='text'  placeholder='Start typing...'></input>
           <i class="fa-solid fa-at"></i><i onClick={store_value} class="fa-regular fa-paper-plane"></i>
         </footer>
       </div>
