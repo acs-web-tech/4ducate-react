@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Second } from "./Second"
 
-let arr = [
+let sendarr = [
   {
     name: "Arun P",
     des: "Developer",
@@ -28,34 +28,73 @@ let resarr = [
   }
 ]
 function App() {
-  let [value,setValue] = useState(resarr)
- 
+  // document.getElementById("usr_cir1").removeAttribute("aria-hidden");
+
+  let [res_msg, setres_msg] = useState(resarr)
+  let [sendr_msg, setsendr_msg] = useState(sendarr)
+
   const bdyarea = document.querySelector('.bdy')
   // const msg_tip = document.querySelector('.msg_tip')
-  const store_value = (event) => {
+  let [isSenderTurn, setIsSenderTurn] = useState(true);
+
+  const Store_value = (event) => {
+    const t = new Date()
+    const time = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const inputarea = document.querySelector('.typing')
-    setValue([...value,{
-      message: inputarea.value,
-      time: "11:56am"
-    }])
-    
+    if (inputarea.value.trim() !== "") {
+      if (isSenderTurn) {
+        setsendr_msg([...sendr_msg, {
+          name: "Arun P",
+          des: "Developer",
+          message: inputarea.value,
+          time: time
+        }])
+
+      }
+      else {
+        setres_msg([...res_msg, {
+          message: inputarea.value,
+          time: time
+        }])
+
+
+      }
+      setIsSenderTurn(!isSenderTurn);
+    }
+    inputarea.value = ''
+    window.onload = function () {
+      document.getElementById('usr_cir1').removeAttribute('aria-hidden');
+      document.getElementById('usr_cir2').removeAttribute('aria-hidden');
+    };
   }
+
   return (
     <>
       <div class='chat_container'>
-        <header class='head'></header>
+        <header class='head'>
+          <div className='icon_contr'>
+            <i id='usr_cir1 ' className='icon' class="fa-solid fa-circle-user"></i>
+            <i id='usr_cir2 ' className='icon' class="fa-solid fa-circle-user"></i>
+          </div>
+          <div>
+            <h4 className='title'>Team Unicorns</h4>
+            <h6>last seen 45 minutes ago</h6>
+          </div>
+          <i id='menu_icon' class="fa-solid fa-ellipsis"></i>
+        </header>
         <div class='bdy'>
           {/* <div class='msg_tip' ></div> */}
-          <Message sender={arr} res={value}></Message>
+          <Message sender={sendr_msg} res={res_msg}></Message>
         </div>
         <footer class='footer'>
           <i id='smil_emj' class="fa-solid fa-face-grin"></i>
-          <input class='typing' type='text'  placeholder='Start typing...'></input>
-          <i class="fa-solid fa-at"></i><i onClick={store_value} class="fa-regular fa-paper-plane"></i>
+          <input class='typing' type='text' placeholder='Start typing...'></input>
+          <i class="fa-solid fa-at"></i><i onClick={Store_value} class="fa-regular fa-paper-plane"></i>
         </footer>
       </div>
 
-     
+
     </>
   );
 
