@@ -11,20 +11,21 @@ let sendarr = [
     time: "11:34am"
   },
   {
-    name: "Ravi",
-    des: "Sales",
-    message: "Hello guys!",
-    time: "11:56am"
+    name: "Arun P",
+    des: "Developer",
+    message: "bye",
+    time: "11:34am"
   }
+ 
 ]
 let resarr = [
   {
-    message: "Hello guys!",
+    message: "Hello ",
     time: "11:34am"
   },
   {
     message: "Hello guys!",
-    time: "11:56am"
+    time: "11:34am"
   }
 ]
 function App() {
@@ -61,7 +62,7 @@ function App() {
 
       }
       setIsSenderTurn(!isSenderTurn);
-    }
+   }
     inputarea.value = ''
     window.onload = function () {
       document.getElementById('usr_cir1').removeAttribute('aria-hidden');
@@ -85,7 +86,7 @@ function App() {
         </header>
         <div class='bdy'>
           {/* <div class='msg_tip' ></div> */}
-          <Message sender={sendr_msg} res={res_msg}></Message>
+          <Message sender={sendr_msg} res={res_msg} isSenderTurn={isSenderTurn}></Message>
         </div>
         <footer class='footer'>
           <i id='smil_emj' class="fa-solid fa-face-grin"></i>
@@ -106,9 +107,11 @@ function Message(props) {
 
 
       {props.sender.length > 0 ?
-        props.sender.map((value) => {
+        props.sender.map((value,index) => {
+         
           return (
-            <div className='sender'>
+           <>
+           <div className='sender'>
               <div className='message mes-sender'>
                 <div className='use-case'>
                   <div className='user-name'>
@@ -129,33 +132,37 @@ function Message(props) {
               </div>
 
             </div>
+           <div className='res-cont'>
+       
+             <div className='recive'>
+               <div className='message'>
+                 {value.message}
+                 <div className='tip'>
+                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+                     <path d="M6 0C6 0 11.7379 0 13.2 0C14.6621 0 15 1.5 13.65 3C12.3 4.5 6.49937 9.5 6 11C5.50064 12.5 6 0 6 0Z" fill="#007AFF" />
+                     <rect width="6" height="12" fill="#007AFF" />
+                   </svg>
+                 </div>
+                 <div className='time'>
+                   {value.time}
+                 </div>
+               </div>
+ 
+             </div>
+       </div>
+        </>
           )
+        
+          
+           
+        
         })
         : ""}
-      <div className='res-cont'>
-        {props.res.length > 0 ?
-          props.res.map((value) => {
-            return (<div className='recive'>
-              <div className='message'>
-                {value.message}
-                <div className='tip'>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
-                    <path d="M6 0C6 0 11.7379 0 13.2 0C14.6621 0 15 1.5 13.65 3C12.3 4.5 6.49937 9.5 6 11C5.50064 12.5 6 0 6 0Z" fill="#007AFF" />
-                    <rect width="6" height="12" fill="#007AFF" />
-                  </svg>
-                </div>
-                <div className='time'>
-                  {value.time}
-                </div>
-              </div>
-
-            </div>)
-
-          })
-          : ""}
-      </div>
+      
     </div >
+  
   )
+
 }
 
 
