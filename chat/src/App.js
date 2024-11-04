@@ -5,33 +5,36 @@ import { Second } from "./Second"
 
 let sendarr = [
   {
+    type:"sender",
     name: "Arun P",
     des: "Developer",
     message: "Hello guys!",
     time: "11:34am"
   },
   {
-    name: "Arun P",
-    des: "Developer",
-    message: "bye",
-    time: "11:34am"
-  }
- 
-]
-let resarr = [
-  {
+    type:"res",
     message: "Hello ",
     time: "11:34am"
   },
   {
+    type:"sender",
+    name: "Arun P",
+    des: "Developer",
+    message: "bye",
+    time: "11:34am"
+  },
+  {
+    type:"res",
     message: "Hello guys!",
     time: "11:34am"
   }
+ 
 ]
+let resarr = []
 function App() {
   // document.getElementById("usr_cir1").removeAttribute("aria-hidden");
 
-  let [res_msg, setres_msg] = useState(resarr)
+
   let [sendr_msg, setsendr_msg] = useState(sendarr)
 
   const bdyarea = document.querySelector('.bdy')
@@ -46,6 +49,7 @@ function App() {
     if (inputarea.value.trim() !== "") {
       if (isSenderTurn) {
         setsendr_msg([...sendr_msg, {
+          type:"sender",
           name: "Arun P",
           des: "Developer",
           message: inputarea.value,
@@ -54,7 +58,8 @@ function App() {
 
       }
       else {
-        setres_msg([...res_msg, {
+        setsendr_msg([...sendr_msg, {
+          type:"res",
           message: inputarea.value,
           time: time
         }])
@@ -86,7 +91,7 @@ function App() {
         </header>
         <div class='bdy'>
           {/* <div class='msg_tip' ></div> */}
-          <Message sender={sendr_msg} res={res_msg} isSenderTurn={isSenderTurn}></Message>
+          <Message sender={sendr_msg}  isSenderTurn={isSenderTurn}></Message>
         </div>
         <footer class='footer'>
           <i id='smil_emj' class="fa-solid fa-face-grin"></i>
@@ -101,7 +106,7 @@ function App() {
 
 }
 function Message(props) {
-  console.log(props.res.length)
+ // console.log(props.res.length)
   return (
     <div>
 
@@ -111,7 +116,7 @@ function Message(props) {
          
           return (
            <>
-           <div className='sender'>
+          {value.type=="sender"?<div className='sender'>
               <div className='message mes-sender'>
                 <div className='use-case'>
                   <div className='user-name'>
@@ -131,8 +136,8 @@ function Message(props) {
                 </div>
               </div>
 
-            </div>
-           <div className='res-cont'>
+            </div>:""}
+           {value.type=="res"?<div className='res-cont'>
        
              <div className='recive'>
                <div className='message'>
@@ -149,7 +154,7 @@ function Message(props) {
                </div>
  
              </div>
-       </div>
+       </div>:""}
         </>
           )
         
