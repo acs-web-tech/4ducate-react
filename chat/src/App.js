@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState,useEffect,useCallback } from 'react';
 import { Second } from "./Second"
-
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 let sendarr = [
   {
     type: "sender",
@@ -33,8 +33,14 @@ let sendarr = [
 let resarr = []
 function App() {
   // document.getElementById("usr_cir1").removeAttribute("aria-hidden");
-
-
+  
+  const { sendMessage, lastMessage, readyState } = useWebSocket("wss://localhost:3001",{shouldReconnect: (closeEvent) => true,onOpen: () => console.log('opened'),});
+  
+  const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
+  useEffect(()=>{
+    console.log("called")
+     handleClickSendMessage()
+  })
   let [sendr_msg, setsendr_msg] = useState(sendarr)
 
   const bdyarea = document.querySelector('.bdy')
@@ -164,6 +170,7 @@ function App() {
     )
 
   }
+}
 
 }
 
