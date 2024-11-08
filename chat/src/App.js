@@ -36,11 +36,11 @@ function App() {
 
 
   let [sendr_msg, setsendr_msg] = useState(sendarr)
-  const [isSenderTurn, setIsSenderTurn] = useState(true);
+
   const bdyarea = document.querySelector('.bdy')
   // const msg_tip = document.querySelector('.msg_tip')
 
-
+  let [isSenderTurn, setIsSenderTurn] = useState(true);
   const Store_value = (event) => {
     const t = new Date()
     const time = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -48,31 +48,25 @@ function App() {
     const inputarea = document.querySelector('.typing')
     if (inputarea.value.trim() !== "") {
       if (isSenderTurn) {
+
         setsendr_msg([...sendr_msg, {
           type: "sender",
           name: "Arun P",
           des: "Developer",
           message: inputarea.value,
-          time: time
-        }])
+          time: time,
 
+        }])
       }
       else {
+
         setsendr_msg([...sendr_msg, {
-          type: "res",
+          type: "res  ",
           message: inputarea.value,
           time: time
         }])
-
-
-
-
       }
-      inputarea.value = ''
-      window.onload = function () {
-        document.getElementById('usr_cir1').removeAttribute('aria-hidden');
-        document.getElementById('usr_cir2').removeAttribute('aria-hidden');
-      };
+      setIsSenderTurn(!isSenderTurn)
     }
 
     return (
@@ -98,6 +92,7 @@ function App() {
             <input class='typing' type='text' placeholder='Start typing...'></input>
             <i class="fa-solid fa-at"></i><i onClick={Store_value} class="fa-regular fa-paper-plane"></i>
           </footer>
+
         </div>
 
 
@@ -142,10 +137,10 @@ function App() {
                   <div className='recive'>
                     <div className='message'>
                       {value.message}
-                      <div className='tip'>
+                      <div className='tip right'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
-                          <path d="M6 0C6 0 11.7379 0 13.2 0C14.6621 0 15 1.5 13.65 3C12.3 4.5 6.49937 9.5 6 11C5.50064 12.5 6 0 6 0Z" fill="#007AFF" />
-                          <rect width="6" height="12" fill="#007AFF" />
+                          <path d="M9 0C9 0 3.26206 0 1.8 0C0.33795 0 3.14713e-05 1.5 1.35003 3C2.70003 4.5 8.50063 9.5 9 11C9.49936 12.5 9 0 9 0Z" fill="#F2F2F7" />
+                          <rect width="6" height="12" transform="matrix(-1 0 0 1 15 0)" fill="#F2F2F7" />
                         </svg>
                       </div>
                       <div className='time'>
@@ -170,6 +165,6 @@ function App() {
 
   }
 
+}
 
-
-  export default App;
+export default App;
