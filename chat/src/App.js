@@ -3,6 +3,7 @@ import './App.css';
 import React, { useState,useEffect,useCallback } from 'react';
 import { Second } from "./Second"
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import {io} from "socket.io-client"
 let sendarr = [
   {
     type: "sender",
@@ -33,24 +34,33 @@ let sendarr = [
 let resarr = []
 function App() {
   // document.getElementById("usr_cir1").removeAttribute("aria-hidden");
-  
-  const { sendMessage, lastMessage, readyState } = useWebSocket("wss://localhost:3001",{shouldReconnect: (closeEvent) => true,onOpen: () => console.log('opened'),});
-  
-  const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
-  useEffect(()=>{
-    console.log("called")
-     handleClickSendMessage()
-  })
   let [sendr_msg, setsendr_msg] = useState(sendarr)
+  const t = new Date()
+  const time = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const socket = io("http://localhost:3001");  
+  useEffect(()=>{
+  socket.on("message",(data)=>{
+  
+    console.log(data)
+  setsendr_msg(
+    [...sendr_msg, {
+      type: "sender",
+      name: "Arun P",
+      des: "Developer",
+      message: data,
+      time: time
+    }]
+  )
+ })
+},[])
+ 
+
   const [isSenderTurn, setIsSenderTurn] = useState(true);
   const bdyarea = document.querySelector('.bdy')
   // const msg_tip = document.querySelector('.msg_tip')
 
 
   const Store_value = (event) => {
-    const t = new Date()
-    const time = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
     const inputarea = document.querySelector('.typing')
     if (inputarea.value.trim() !== "") {
       if (isSenderTurn) {
@@ -74,6 +84,7 @@ function App() {
 
 
       }
+
       inputarea.value = ''
       window.onload = function () {
         document.getElementById('usr_cir1').removeAttribute('aria-hidden');
@@ -81,6 +92,7 @@ function App() {
       };
     }
 
+  }
     return (
       <>
         <div class='chat_container'>
@@ -110,7 +122,9 @@ function App() {
       </>
     );
 
-  }
+}
+
+
   function Message(props) {
     // console.log(props.res.length)
     return (
@@ -175,7 +189,6 @@ function App() {
     )
 
   }
-}
 
 
 

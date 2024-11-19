@@ -1,11 +1,15 @@
 const { Server } = require("socket.io");
-
-const io = new Server({cors:{origin:"http://localhost:3000"}});
+const {createServer} = require("http")
+const httpServer = createServer();
+const io = new Server(httpServer,{cors:{origin:"http://localhost:3000"}});
 
 io.on("connection", (socket) => {
-console.log("worked")
+
+  socket.emit("message","hello ")
+  socket.emit("message","hello 2")
+
 });
 io.on("message",(socket)=>{
     console.log(socket)
 })
-io.listen(3001);
+httpServer.listen(3001);
