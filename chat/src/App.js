@@ -1,8 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Second } from "./Second"
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { io } from "socket.io-client"
 import { io } from "socket.io-client"
 let sendarr = [
   {
@@ -38,6 +40,14 @@ let sendarr = [
 let resarr = []
 function App() {
   // document.getElementById("usr_cir1").removeAttribute("aria-hidden");
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket("wss://localhost:3001", { shouldReconnect: (closeEvent) => true, onOpen: () => console.log('opened'), });
+
+  const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
+  useEffect(() => {
+    console.log("called")
+    handleClickSendMessage()
+  })
   let [sendr_msg, setsendr_msg] = useState(sendarr)
   let [isconnected,setCon] = useState(false)
   const t = new Date()
@@ -149,8 +159,14 @@ function Message(props) {
   // console.log(props.res.length)
   return (
     <div>
+function Message(props) {
+  // console.log(props.res.length)
+  return (
+    <div>
 
 
+      {props.sender.length > 0 ?
+        props.sender.map((value, index) => {
       {props.sender.length > 0 ?
         props.sender.map((value, index) => {
 
@@ -175,7 +191,30 @@ function Message(props) {
                     {value.time}
                   </div>
                 </div>
+          return (
+            <>
+              {value.type == "sender" ? <div className='sender'>
+                <div className='message mes-sender'>
+                  <div className='use-case'>
+                    <div className='user-name'>
+                      {value.name}
+                    </div>
+                    <div className='des'>{value.des}</div>
+                  </div>
+                  {value.message}
+                  <div className='tip right'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+                      <path d="M9 0C9 0 3.26206 0 1.8 0C0.33795 0 3.14713e-05 1.5 1.35003 3C2.70003 4.5 8.50063 9.5 9 11C9.49936 12.5 9 0 9 0Z" fill="#F2F2F7" />
+                      <rect width="6" height="12" transform="matrix(-1 0 0 1 15 0)" fill="#F2F2F7" />
+                    </svg>
+                  </div>
+                  <div className='time'>
+                    {value.time}
+                  </div>
+                </div>
 
+              </div> : ""}
+              {value.type == "res" ? <div className='res-cont'>
               </div> : ""}
               {value.type == "res" ? <div className='res-cont'>
 
@@ -193,6 +232,10 @@ function Message(props) {
                     </div>
                   </div>
 
+                </div>
+              </div> : ""}
+            </>
+          )
                 </div>
               </div> : ""}
             </>
